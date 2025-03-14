@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const todoController = require('../controllers/todoController');
+const auth = require('../middleware/auth');
+
+// Apply auth middleware to all routes
+router.use(auth);
 
 // Create Todo
 router.post('/', async (req, res) => {

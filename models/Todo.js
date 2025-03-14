@@ -1,4 +1,3 @@
-// models/Todo.js
 const mongoose = require('mongoose');
 
 const TodoSchema = new mongoose.Schema({
@@ -21,6 +20,15 @@ const TodoSchema = new mongoose.Schema({
   },
   dueDate: {
     type: Date
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  username: {
+    type: String,
+    required: true
   }
 });
 
