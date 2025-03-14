@@ -1,0 +1,60 @@
+node_modules/
+.env
+.vercel
+.DS_Store
+npm-debug.log
+```
+
+3. Update your `index.js` for production:
+
+<antArtifact identifier="production-index" type="application/vnd.ant.code" language="javascript" title="Production-Ready Index.js">
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const connectDB = require('./config/db');
+const todoRoutes = require('./routes/todoRoutes');
+require('dotenv').config();
+
+const app = express();
+const PORT = process.env.PORT || 8000;
+
+// Connect to MongoDB
+connectDB();
+
+// Middleware
+app.use(cors({
+  origin: '*', // Adjust this in production
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+app.use(bodyParser.json());
+app.use(express.json());
+
+// Root route for health check
+app.get('/', (req, res) => {
+  res.status(200).json({ 
+    message: 'Todo App Backend is running', 
+    timestamp: new Date().toISOString() 
+  });
+});
+
+// Routes
+app.use('/api/todos', todoRoutes);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    error: 'Something went wrong!',
+    message: err.message
+  });
+});
+
+// Start server
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
