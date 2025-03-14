@@ -1,27 +1,70 @@
-// routes/todoRoutes.js
 const express = require('express');
 const router = express.Router();
-const todoController = require('../models/Todo');
+const todoController = require('../controllers/todoController');
 
-// Explicitly define route handlers
-router.post('/', (req, res) => {
-  todoController.createTodo(req, res);
+// Create Todo
+router.post('/', async (req, res) => {
+  try {
+    await todoController.createTodo(req, res);
+  } catch (error) {
+    console.error('Route Create Todo Error:', error);
+    res.status(500).json({ 
+      message: 'Error in todo route', 
+      error: error.message 
+    });
+  }
 });
 
-router.get('/', (req, res) => {
-  todoController.getAllTodos(req, res);
+// Get All Todos
+router.get('/', async (req, res) => {
+  try {
+    await todoController.getAllTodos(req, res);
+  } catch (error) {
+    console.error('Route Get Todos Error:', error);
+    res.status(500).json({ 
+      message: 'Error in todos route', 
+      error: error.message 
+    });
+  }
 });
 
-router.get('/:id', (req, res) => {
-  todoController.getTodoById(req, res);
+// Get Todo by ID
+router.get('/:id', async (req, res) => {
+  try {
+    await todoController.getTodoById(req, res);
+  } catch (error) {
+    console.error('Route Get Todo Error:', error);
+    res.status(500).json({ 
+      message: 'Error in todo route', 
+      error: error.message 
+    });
+  }
 });
 
-router.put('/:id', (req, res) => {
-  todoController.updateTodo(req, res);
+// Update Todo
+router.put('/:id', async (req, res) => {
+  try {
+    await todoController.updateTodo(req, res);
+  } catch (error) {
+    console.error('Route Update Todo Error:', error);
+    res.status(500).json({ 
+      message: 'Error in update todo route', 
+      error: error.message 
+    });
+  }
 });
 
-router.delete('/:id', (req, res) => {
-  todoController.deleteTodo(req, res);
+// Delete Todo
+router.delete('/:id', async (req, res) => {
+  try {
+    await todoController.deleteTodo(req, res);
+  } catch (error) {
+    console.error('Route Delete Todo Error:', error);
+    res.status(500).json({ 
+      message: 'Error in delete todo route', 
+      error: error.message 
+    });
+  }
 });
 
 module.exports = router;
